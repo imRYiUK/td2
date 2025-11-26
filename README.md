@@ -253,3 +253,64 @@ Le HTML complet est généré et envoyé au navigateur, affichant :
 - **Pas à pas sortant (Step Out - Shift+F11)** : Pour sortir rapidement d'une méthode et revenir à l'appelant
   - Utile si on entre accidentellement dans du code framework
   - Pour remonter rapidement dans la pile d'appels
+
+
+---
+
+## Déploiement Windows
+
+### Publication de l'Application
+
+L'application a été publiée en tant qu'exécutable Windows autonome (self-contained) avec le runtime .NET Core 2.0 inclus.
+
+**Commande de publication :**
+```bash
+dotnet publish -c Release -r win-x64 --self-contained true
+```
+
+### Emplacement de l'Exécutable
+
+Le package de déploiement se trouve dans :
+```
+P2FixAnAppDotNetCode/bin/Release/netcoreapp2.0/win-x64/publish/
+```
+
+**Fichiers principaux :**
+- `Diayma.exe` (77 KB) - Exécutable principal de l'application
+- `Diayma.dll` (21 KB) - Bibliothèque de l'application
+- `Diayma.deps.json` (378 KB) - Dépendances de l'application
+- `Diayma.runtimeconfig.json` - Configuration du runtime
+- Runtime .NET Core complet (~102 MB au total)
+
+### Instructions de Déploiement
+
+1. **Copier le dossier complet** `publish/` sur une machine Windows
+2. **Aucune installation de .NET Core requise** - Le runtime est inclus
+3. **Lancer l'application** en double-cliquant sur `Diayma.exe`
+4. **Accéder à l'application** via le navigateur à l'adresse affichée dans la console (généralement `http://localhost:5000`)
+
+### Configuration du Port (Optionnel)
+
+Pour modifier le port d'écoute, vous pouvez :
+- Utiliser la variable d'environnement : `set ASPNETCORE_URLS=http://localhost:8080`
+- Ou lancer avec : `Diayma.exe --urls "http://localhost:8080"`
+
+### Notes Importantes
+
+- **Taille du package** : ~102 MB (runtime inclus pour fonctionnement autonome)
+- **Plateforme cible** : Windows x64
+- **Aucune dépendance externe** : Tout est inclus dans le dossier publish
+- **Pare-feu** : Peut nécessiter une autorisation pour écouter sur un port HTTP
+
+### Création d'une Archive de Déploiement
+
+Pour faciliter le transfert, vous pouvez créer une archive :
+```bash
+cd P2FixAnAppDotNetCode/bin/Release/netcoreapp2.0/win-x64/
+zip -r Diayma-Windows-x64.zip publish/
+```
+
+Ou avec tar :
+```bash
+tar -czf Diayma-Windows-x64.tar.gz publish/
+```
